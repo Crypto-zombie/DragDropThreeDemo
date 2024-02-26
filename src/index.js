@@ -23,7 +23,7 @@ function initScene() {
     70,
     window.innerWidth / window.innerHeight,
     0.01,
-    500
+    1000
   );
   camera.position.set(20, 20, 40);
 
@@ -46,7 +46,9 @@ function initScene() {
 
   // camera controls
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 55, 0);
+  controls.target.set(0, 0, 0);
+  controls.maxPolarAngle = 1;
+  controls.minPoloarAngle = 2;
   controls.enableDamping = true;
   controls.update();
 
