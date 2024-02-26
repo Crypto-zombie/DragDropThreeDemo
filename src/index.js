@@ -29,6 +29,7 @@ function initScene() {
 
   //scene
   scene = new THREE.Scene();
+  scene.background = new THREE.Color('#838282');
 
   //main light
   let ambientLight = new THREE.AmbientLight(0xffffff, 0.30);
@@ -47,15 +48,15 @@ function initScene() {
   // camera controls
   controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 0, 0);
-  controls.maxPolarAngle = 1;
+  controls.maxPolarAngle = 0.95;
   controls.minPoloarAngle = 2;
   controls.enableDamping = true;
   controls.update();
 
   //plan
   let floor = new THREE.Mesh(
-    new THREE.BoxBufferGeometry(2000, 3, 2000),
-    new THREE.MeshBasicMaterial({ color: 0x1b8f06 })
+    new THREE.BoxGeometry(4000, 3, 4000),
+    new THREE.MeshBasicMaterial({ color: '#838282' })
   );
   floor.isDraggable = false;
   scene.add(floor);
