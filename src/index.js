@@ -12,6 +12,11 @@ const raycaster = new THREE.Raycaster();
 initScene();
 addBox(20,10,15, {x: 0, y: 10, z: 0}, 'white', 'origin', 1, false);
 addBox(1,3,0.4, {x: 10, y: 10, z: 10}, 'red', 'item', 1, true);
+addBox(20,10,0.1, {x: 0, y: 10, z: 7.5}, 'white', 'front', 0.5, false);
+addBox(20,10,0.1, {x: 0, y: 10, z: -7.5}, 'white', 'back', 0.5, false);
+addBox(0.1,10,15, {x: 10, y: 10, z: 0}, 'white', 'left', 0.5, false);
+addBox(0.1,10,15, {x: -10, y: 10, z: 0}, 'white', 'right', 0.5, false);
+addBox(20,0.1,15, {x: 0, y: 15, z: 0}, 'white', 'top', 0.5, false);
 
 function initScene() {
   //create dom
@@ -58,6 +63,7 @@ function initScene() {
     new THREE.BoxGeometry(4000, 3, 4000),
     new THREE.MeshBasicMaterial({ color: '#838282' })
   );
+  floor.name = 'floor';
   floor.isDraggable = false;
   scene.add(floor);
 
@@ -87,10 +93,33 @@ function dragObject() {
     const found = raycaster.intersectObjects(scene.children);
     if(found.length) {
       for (let obj of found) {
-        if(!obj.object.isDraggable) {
+        if(!obj.object.isDraggable && obj.object.name === 'top') {
+          break;
+        }
+        if(!obj.object.isDraggable && obj.object.name === 'floor') {
           draggableObject.position.x = obj.point.x;
           draggableObject.position.z = obj.point.z;
+          draggableObject.position.y = 10;
           break;
+        }
+        else if(!obj.object.isDraggable && obj.object.name === 'origin') {
+          draggableObject.position.x = obj.point.x;
+          draggableObject.position.z = obj.point.z;
+          draggableObject.position.y = obj.point.y;
+          break;
+
+        }
+        if(obj.object.name === 'front') {
+          draggableObject.rotation.set(0,0,0);
+        }
+        else if(obj.object.name === 'left') {
+          draggableObject.rotation.set(0,Math.PI/2,0);
+        }
+        else if(obj.object.name === 'right') {
+          draggableObject.rotation.set(0,-Math.PI/2,0);
+        }
+        else if(obj.object.name === 'back') {
+          draggableObject.rotation.set(0,0,0);
         }
       }
     }
