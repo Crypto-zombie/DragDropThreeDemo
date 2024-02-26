@@ -63,8 +63,9 @@ function initScene() {
 
   //set event global
   window.addEventListener('resize', onWindowResize );
-  window.addEventListener('click', onClick);
-  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('pointerdown', onPointerDown);
+  window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerup', onPointerUp);
   //render Scene
   renderScene();
 }
@@ -95,22 +96,28 @@ function dragObject() {
   }
 }
 
-function onClick(event) {
+function onPointerUp() {
   if(draggableObject) {
     draggableObject = undefined;
+    controls.enabled = true;
     return;
   }
 
+}
+
+function onPointerDown(event){
   clickMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   clickMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(clickMouse, camera);
   const found = raycaster.intersectObjects(scene.children, true);
   if (found.length && found[0].object.isDraggable) {
     draggableObject = found[0].object;
+    controls.enabled = false;
+    controls.update();
   }
 }
 
-function onMouseMove(event) {
+function onPointerMove(event) {
   dragObject();
   moveMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   moveMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
