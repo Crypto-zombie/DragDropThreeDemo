@@ -10,8 +10,8 @@ const moveMouse  = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
 
 initScene();
-addBox(20,10,15, {x: 0, y: 10, z: 0}, 'white', false);
-addBox(1,3,0.4, {x: 10, y: 10, z: 10}, 'red', true);
+addBox(20,10,15, {x: 0, y: 10, z: 0}, 'white', 'origin', 1, false);
+addBox(1,3,0.4, {x: 10, y: 10, z: 10}, 'red', 'item', 1, true);
 
 function initScene() {
   //create dom
@@ -70,11 +70,12 @@ function initScene() {
   renderScene();
 }
 
-function addBox(width, height, depth, pos, color, draggable) {
+function addBox(width, height, depth, pos, color, name, opacity, draggable) {
   let obj = new THREE.Mesh(
     new THREE.BoxGeometry(width, height, depth, 1, 1, 1),
-    new THREE.MeshLambertMaterial({color: color})
+    new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: opacity })
   );
+  obj.name = name;
   obj.position.set(pos.x, pos.y, pos.z);
   obj.isDraggable = draggable;
   scene.add(obj);
