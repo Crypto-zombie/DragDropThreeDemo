@@ -9,8 +9,12 @@ const clickMouse = new THREE.Vector2();
 const moveMouse  = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
 
+const parentObj = new THREE.Box3();
+const item = new THREE.Box3();
+
 initScene();
 addBox(20,10,15, {x: 0, y: 10, z: 0}, 'white', 'origin', 1, false);
+cloneBox(20.41,10,15.41, {x: 0, y: 10, z: 0});
 addBox(1,3,0.4, {x: 10, y: 10, z: 10}, 'red', 'item', 1, true);
 addBox(20,10,0.1, {x: 0, y: 10, z: 7.5}, 'white', 'front', 0.5, false);
 addBox(20,10,0.1, {x: 0, y: 10, z: -7.5}, 'white', 'back', 0.5, false);
@@ -87,6 +91,16 @@ function addBox(width, height, depth, pos, color, name, opacity, draggable) {
   scene.add(obj);
 }
 
+function cloneBox(width, height, depth, pos) {
+  let obj = new THREE.Mesh(
+    new THREE.BoxGeometry(width, height, depth, 1, 1, 1),
+    new THREE.MeshBasicMaterial({color: white})
+  );
+  obj.name = name;
+  obj.position.set(pos.x, pos.y, pos.z);
+  obj.geometry.computeBoundingBox();
+  parentObj.copy(obj.geometry.boundingBox).applyMatrix4(obj.matrixWorld);
+}
 function dragObject() {
   if(draggableObject) {
     raycaster.setFromCamera(moveMouse, camera);
